@@ -3,6 +3,8 @@
   border: none;
   background-image: url(../../../images/02profile/edit_button.svg);
   width: 24px;
+  min-width: 24px;
+  min-height: 24px;
   height: 24px;
   align-self: end;
   cursor: pointer;
