@@ -1,4 +1,4 @@
-.pop-up__textarea {
+.popup__textarea {
   box-sizing: border-box;
   width: 100%;
   font-weight: 400;
@@ -9,6 +9,6 @@
   padding-bottom: 9px;
 }
 
-.pop-up__textarea:focus {
+.popup__textarea:focus {
   outline: none;
 }

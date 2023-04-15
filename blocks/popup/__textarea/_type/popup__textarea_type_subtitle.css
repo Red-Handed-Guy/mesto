@@ -1,9 +1,9 @@
-.pop-up__subtitle {
+.popup__textarea_type_subtitle {
   margin: 0 0 48px 0;
 }
 
 @media (max-width: 400px) {
-  .pop-up__subtitle {
+  .popup__textarea_type_subtitle {
     margin: 0 0 45px 0;
   }
 }
