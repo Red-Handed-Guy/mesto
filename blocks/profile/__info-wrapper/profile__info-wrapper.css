@@ -1,0 +1,10 @@
+.profile__info-wrapper {
+  display: flex;
+  column-gap: 18px;
+}
+
+@media (max-width: 400px) {
+  .profile__info-wrapper {
+    column-gap: 10px;
+  }
+}
