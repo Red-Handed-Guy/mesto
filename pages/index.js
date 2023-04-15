@@ -33,7 +33,6 @@ function savePopup(event) {
   popup.classList.remove('pop-up_opened')
   profileTitle.textContent = popupName.value
   profileSubtitle.textContent = popupSubtitle.value
-  
 }
 
 profileEditButton.addEventListener('click', openPopup)
