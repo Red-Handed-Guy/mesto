@@ -7,13 +7,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 296px;
+  max-width: 294px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 560px) {
   .profile__title {
+    max-width: 189px;
     font-size: 27px;
     line-height: 33px;
-    max-width: 254px;
   }
 }

@@ -7,10 +7,10 @@
   align-items: center;
 }
 
-@media (max-width: 710px) {
+@media (max-width: 760px) {
   .profile  {
     padding-top: 42px;
     flex-direction: column;
-    row-gap: 36px;
+    row-gap: 32px;
   }
 }
