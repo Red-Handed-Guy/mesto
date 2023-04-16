@@ -1,6 +1,6 @@
 // постоянные popup
 const popup = document.querySelector('.popup')
-const popupForm = popup.querySelector('.popup__container')
+const popupForm = popup.querySelector('.popup__form')
 const popupCloseButton = popup.querySelector('.popup__close-button')
 const popupName = popup.querySelector('.popup__textarea_type_name')
 const popupSubtitle = popup.querySelector('.popup__textarea_type_subtitle')
@@ -19,16 +19,16 @@ function openPopup() {
 }
 
 //закрытие popup
-function closePopup(event) {
-  event.preventDefault()
+function closePopup() {
   popup.classList.remove('popup_opened')
 }
 
 //сохранение popup
 function savePopup(event) {
-  closePopup(event)
+  event.preventDefault()
   profileTitle.textContent = popupName.value
   profileSubtitle.textContent = popupSubtitle.value
+  closePopup()
 }
 
 profileEditButton.addEventListener('click', openPopup)
