@@ -12,6 +12,7 @@
   position: absolute;
   top: 15px;
   right: -43px;
+  padding: 0;
 }
 
 .profile__edit-button:hover {
