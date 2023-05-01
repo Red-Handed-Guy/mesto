@@ -111,7 +111,7 @@ const makeElementCard = (name, link) => {
 }
 
 //*добавление карточек по-умолчанию
-const initialCardsList = initialCards.map((element) => {
+const addInitialCards = initialCards.map((element) => {
   const initialCard = makeElementCard(element.name, element.link)
   elementsContainer.append(initialCard)
 })
