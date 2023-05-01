@@ -4,6 +4,11 @@ const popupEdit = document.querySelector('.popup_type_edit')
 //постоянные popupNewCard
 const popupNewCard = document.querySelector('.popup_type_new-card')
 
+//постоянные popupTypeImg
+const popupTypeImg = document.querySelector('.popup_type_image')
+const popupImg = popupTypeImg.querySelector('.popup__img')
+const popupCaption = popupTypeImg.querySelector('.popup__img-caption')
+
 //постоянные elements, element-template
 const elementsContainer = document.querySelector('.elements')
 
@@ -21,14 +26,17 @@ const cardsAddButton = document.querySelector('.profile__add-button')
 const closeButton = (somePopup) => {
   return somePopup.querySelector('.popup__close-button')
 }
+
 //универсальное поле popupName
 const popupName = (somePopup) => {
   return somePopup.querySelector('.popup__textarea_type_name')
 }
+
 //универсальное поле popupSubtitle
 const popupSubtitle = (somePopup) => {
   return somePopup.querySelector('.popup__textarea_type_subtitle')
 }
+
 //универсальное поле popupForm
 const popupForm = (somePopup) => {
   return somePopup.querySelector('.popup__form')
@@ -72,7 +80,7 @@ function closePopup(modal) {
   modal.classList.remove('popup_opened')
 }
 
-//*карточка element (помещение значений в строки html-карточки)
+//!карточка element (помещение значений в строки html-тегов)
 const makeElementCard = (name, link) => {
   const elementCard = elementTemplateCard
     .querySelector('.element')
@@ -81,14 +89,24 @@ const makeElementCard = (name, link) => {
   elementCard.querySelector('.element__img').src = link
   elementCard.querySelector('.element__img').alt = name
   const likeToggle = elementCard.querySelector('.element__like-img')
-  //лайк
+
+  //слушатель лайка
   likeToggle.addEventListener('click', () => {
     likeToggle.classList.toggle('element__like-img_active')
   })
-  //удалить
+
+  //слушатель кнопки удалить карточку
   elementCard
     .querySelector('.element__delete-button')
     .addEventListener('click', () => elementCard.remove())
+    
+  //слушатель картинки (открыть popup)
+  elementCard.querySelector('.element__img').addEventListener('click', () => {
+    openPopup(popupTypeImg)
+    popupImg.src = link
+    popupImg.alt = name
+    popupCaption.textContent = name
+  })
   return elementCard
 }
 
@@ -105,8 +123,10 @@ profileEditButton.addEventListener('click', () => {
   popupName(popupEdit).value = profileTitle.textContent
   popupSubtitle(popupEdit).value = profileSubtitle.textContent
 })
+
 //закрытие
 closeButton(popupEdit).addEventListener('click', () => closePopup(popupEdit))
+
 //сохранение
 popupForm(popupEdit).addEventListener('submit', (event) => {
   event.preventDefault()
@@ -120,10 +140,12 @@ popupForm(popupEdit).addEventListener('submit', (event) => {
 cardsAddButton.addEventListener('click', () => {
   openPopup(popupNewCard)
 })
+
 //закрытие
 closeButton(popupNewCard).addEventListener('click', () =>
   closePopup(popupNewCard)
 )
+
 //сохранение
 popupForm(popupNewCard).addEventListener('submit', (event) => {
   event.preventDefault()
@@ -135,3 +157,9 @@ popupForm(popupNewCard).addEventListener('submit', (event) => {
   )
   closePopup(popupNewCard)
 })
+
+//!прослушивание элемента popupTypeImg
+//закрытие
+closeButton(popupTypeImg).addEventListener('click', () =>
+  closePopup(popupTypeImg)
+)
