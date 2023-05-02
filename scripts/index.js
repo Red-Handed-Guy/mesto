@@ -7,7 +7,7 @@ const popupCardName = popupNewCard.querySelector('.popup__textarea_type_name')
 const popupCardLink = popupNewCard.querySelector('.popup__textarea_type_subtitle')
 
 //постоянные popupTypeImg
-const popupTypeImg = document.querySelector('.popup_type_image')
+const popupTypeImg = document.querySelector('.popup_type_img')
 const popupImg = popupTypeImg.querySelector('.popup__img')
 const popupCaption = popupTypeImg.querySelector('.popup__img-caption')
 
@@ -105,9 +105,9 @@ const makeElementCard = (card) => {
   //слушатель картинки (открыть popup)
   elementCard.querySelector('.element__img').addEventListener('click', () => {
     openPopup(popupTypeImg)
-    popupImg.src = link
-    popupImg.alt = name
-    popupCaption.textContent = name
+    popupImg.src = card.link
+    popupImg.alt = card.name
+    popupCaption.textContent = card.name
   })
   return elementCard
 }
