@@ -1,15 +1,25 @@
 //постоянные popupEdit
 const popupEdit = document.querySelector('.popup_type_edit')
+const popupEditName = popupEdit.querySelector('.popup__textarea_type_name')
+const popupEditSubtitle = popupEdit.querySelector(
+  '.popup__textarea_type_subtitle'
+)
+const popupEditForm = popupEdit.querySelector('.popup__form')
 
 //постоянные popupNewCard
 const popupNewCard = document.querySelector('.popup_type_new-card')
+const popupCardName = popupNewCard.querySelector('.popup__textarea_type_name')
+const popupCardLink = popupNewCard.querySelector(
+  '.popup__textarea_type_subtitle'
+)
+const popupCardForm = popupNewCard.querySelector('.popup__form')
 
 //постоянные popupTypeImg
-const popupTypeImg = document.querySelector('.popup_type_image')
+const popupTypeImg = document.querySelector('.popup_type_img')
 const popupImg = popupTypeImg.querySelector('.popup__img')
 const popupCaption = popupTypeImg.querySelector('.popup__img-caption')
 
-//постоянные elements, element-template
+//постоянные elements
 const elementsContainer = document.querySelector('.elements')
 
 //постоянные element-template
@@ -22,54 +32,6 @@ const profileTitle = profile.querySelector('.profile__title')
 const profileSubtitle = profile.querySelector('.profile__subtitle')
 const cardsAddButton = document.querySelector('.profile__add-button')
 
-//универсальная кнопка закрытия
-const closeButton = (somePopup) => {
-  return somePopup.querySelector('.popup__close-button')
-}
-
-//универсальное поле popupName
-const popupName = (somePopup) => {
-  return somePopup.querySelector('.popup__textarea_type_name')
-}
-
-//универсальное поле popupSubtitle
-const popupSubtitle = (somePopup) => {
-  return somePopup.querySelector('.popup__textarea_type_subtitle')
-}
-
-//универсальное поле popupForm
-const popupForm = (somePopup) => {
-  return somePopup.querySelector('.popup__form')
-}
-
-//карточки по-умолчанию
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
-  },
-]
-
 //открытие popup
 function openPopup(modal) {
   modal.classList.add('popup_opened')
@@ -81,14 +43,16 @@ function closePopup(modal) {
 }
 
 //!карточка element (помещение значений в строки html-тегов)
-const makeElementCard = (name, link) => {
+const makeElementCard = (card) => {
   const elementCard = elementTemplateCard
     .querySelector('.element')
     .cloneNode(true)
-  elementCard.querySelector('.element__title').textContent = name
-  elementCard.querySelector('.element__img').src = link
-  elementCard.querySelector('.element__img').alt = name
+  const cardImg = elementCard.querySelector('.element__img')
   const likeToggle = elementCard.querySelector('.element__like-img')
+
+  elementCard.querySelector('.element__title').textContent = card.name
+  cardImg.src = card.link
+  cardImg.alt = card.name
 
   //слушатель лайка
   likeToggle.addEventListener('click', () => {
@@ -99,20 +63,20 @@ const makeElementCard = (name, link) => {
   elementCard
     .querySelector('.element__delete-button')
     .addEventListener('click', () => elementCard.remove())
-    
+
   //слушатель картинки (открыть popup)
   elementCard.querySelector('.element__img').addEventListener('click', () => {
     openPopup(popupTypeImg)
-    popupImg.src = link
-    popupImg.alt = name
-    popupCaption.textContent = name
+    popupImg.src = card.link
+    popupImg.alt = card.name
+    popupCaption.textContent = card.name
   })
   return elementCard
 }
 
 //*добавление карточек по-умолчанию
-const addInitialCards = initialCards.map((element) => {
-  const initialCard = makeElementCard(element.name, element.link)
+initialCards.map((cards) => {
+  const initialCard = makeElementCard(cards)
   elementsContainer.append(initialCard)
 })
 
@@ -120,18 +84,15 @@ const addInitialCards = initialCards.map((element) => {
 //открытие
 profileEditButton.addEventListener('click', () => {
   openPopup(popupEdit)
-  popupName(popupEdit).value = profileTitle.textContent
-  popupSubtitle(popupEdit).value = profileSubtitle.textContent
+  popupEditName.value = profileTitle.textContent
+  popupEditSubtitle.value = profileSubtitle.textContent
 })
 
-//закрытие
-closeButton(popupEdit).addEventListener('click', () => closePopup(popupEdit))
-
 //сохранение
-popupForm(popupEdit).addEventListener('submit', (event) => {
+popupEditForm.addEventListener('submit', (event) => {
   event.preventDefault()
-  profileTitle.textContent = popupName(popupEdit).value
-  profileSubtitle.textContent = popupSubtitle(popupEdit).value
+  profileTitle.textContent = popupEditName.value
+  profileSubtitle.textContent = popupEditSubtitle.value
   closePopup(popupEdit)
 })
 
@@ -141,25 +102,18 @@ cardsAddButton.addEventListener('click', () => {
   openPopup(popupNewCard)
 })
 
-//закрытие
-closeButton(popupNewCard).addEventListener('click', () =>
-  closePopup(popupNewCard)
-)
-
 //сохранение
-popupForm(popupNewCard).addEventListener('submit', (event) => {
+popupCardForm.addEventListener('submit', (event) => {
   event.preventDefault()
-  elementsContainer.prepend(
-    makeElementCard(
-      popupName(popupNewCard).value,
-      popupSubtitle(popupNewCard).value
-    )
-  )
+  const cardObj = { name: popupCardName.value, link: popupCardLink.value }
+  elementsContainer.prepend(makeElementCard(cardObj))
+  popupCardName.value = ''
+  popupCardLink.value = ''
   closePopup(popupNewCard)
 })
 
-//!прослушивание элемента popupTypeImg
-//закрытие
-closeButton(popupTypeImg).addEventListener('click', () =>
-  closePopup(popupTypeImg)
-)
+//!кнопка закрытия popup'ов (спасибо за способ!)
+document.querySelectorAll('.popup__close-button').forEach((button) => {
+  const buttonsPopup = button.closest('.popup') // нашли родителя с нужным классом
+  button.addEventListener('click', () => closePopup(buttonsPopup)) // закрыли попап
+})
