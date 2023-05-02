@@ -3,6 +3,8 @@ const popupEdit = document.querySelector('.popup_type_edit')
 
 //постоянные popupNewCard
 const popupNewCard = document.querySelector('.popup_type_new-card')
+const popupCardName = popupNewCard.querySelector('.popup__textarea_type_name')
+const popupCardLink = popupNewCard.querySelector('.popup__textarea_type_subtitle')
 
 //постоянные popupTypeImg
 const popupTypeImg = document.querySelector('.popup_type_image')
@@ -81,13 +83,13 @@ function closePopup(modal) {
 }
 
 //!карточка element (помещение значений в строки html-тегов)
-const makeElementCard = (name, link) => {
+const makeElementCard = (card) => {
   const elementCard = elementTemplateCard
     .querySelector('.element')
     .cloneNode(true)
-  elementCard.querySelector('.element__title').textContent = name
-  elementCard.querySelector('.element__img').src = link
-  elementCard.querySelector('.element__img').alt = name
+  elementCard.querySelector('.element__title').textContent = card.name
+  elementCard.querySelector('.element__img').src = card.link
+  elementCard.querySelector('.element__img').alt = card.name
   const likeToggle = elementCard.querySelector('.element__like-img')
 
   //слушатель лайка
@@ -111,8 +113,8 @@ const makeElementCard = (name, link) => {
 }
 
 //*добавление карточек по-умолчанию
-const addInitialCards = initialCards.map((element) => {
-  const initialCard = makeElementCard(element.name, element.link)
+const addInitialCards = initialCards.map((cards) => {
+  const initialCard = makeElementCard(cards)
   elementsContainer.append(initialCard)
 })
 
@@ -149,12 +151,10 @@ closeButton(popupNewCard).addEventListener('click', () =>
 //сохранение
 popupForm(popupNewCard).addEventListener('submit', (event) => {
   event.preventDefault()
-  elementsContainer.prepend(
-    makeElementCard(
-      popupName(popupNewCard).value,
-      popupSubtitle(popupNewCard).value
-    )
-  )
+  const cardObj = {name: popupCardName.value, link: popupCardLink.value}
+  elementsContainer.prepend(makeElementCard(cardObj))
+  popupCardName.value = ''
+  popupCardLink.value = ''
   closePopup(popupNewCard)
 })
 
