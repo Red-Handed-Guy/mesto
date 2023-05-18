@@ -112,8 +112,24 @@ popupCardForm.addEventListener('submit', (event) => {
   closePopup(popupNewCard)
 })
 
-//!кнопка закрытия popup'ов (спасибо за способ!)
+//!кнопка закрытия popup'ов 
 document.querySelectorAll('.popup__close-button').forEach((button) => {
   const buttonsPopup = button.closest('.popup') // нашли родителя с нужным классом
   button.addEventListener('click', () => closePopup(buttonsPopup)) // закрыли попап
+})
+
+//!закрытие popup'a по кнопке Escape
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape') {
+    const activePopup = document.querySelector('.popup_opened')
+    activePopup.classList.remove('popup_opened')
+  }
+})
+
+//!закрытие popup'a кликом по оверлею
+document.addEventListener('click', (evt) => {
+  const clickTarget = evt.target.classList
+  if ([...clickTarget].includes('popup_opened')) {
+    clickTarget.remove('popup_opened')
+  }
 })
