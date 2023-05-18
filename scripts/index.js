@@ -1,16 +1,16 @@
 //постоянные popupEdit
 const popupEdit = document.querySelector('.popup_type_edit')
-const popupEditName = popupEdit.querySelector('.popup__textarea_type_name')
+const popupEditName = popupEdit.querySelector('.popup__input_type_name')
 const popupEditSubtitle = popupEdit.querySelector(
-  '.popup__textarea_type_subtitle'
+  '.popup__input_type_subtitle'
 )
 const popupEditForm = popupEdit.querySelector('.popup__form')
 
 //постоянные popupNewCard
 const popupNewCard = document.querySelector('.popup_type_new-card')
-const popupCardName = popupNewCard.querySelector('.popup__textarea_type_name')
+const popupCardName = popupNewCard.querySelector('.popup__input_type_name')
 const popupCardLink = popupNewCard.querySelector(
-  '.popup__textarea_type_subtitle'
+  '.popup__input_type_subtitle'
 )
 const popupCardForm = popupNewCard.querySelector('.popup__form')
 
