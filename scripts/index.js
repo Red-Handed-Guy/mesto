@@ -33,6 +33,7 @@ const cardsAddButton = document.querySelector('.profile__add-button')
 //закрытие popup по escape
 function closeByEsc(evt) {
   if (evt.key === 'Escape') {
+    evt.preventDefault()
     const activePopup = document.querySelector('.popup_opened')
     closePopup(activePopup)
   }
@@ -42,8 +43,7 @@ function closeByEsc(evt) {
 function closeByClick(evt) {
   const clickTarget = evt.target
   if ([...clickTarget.classList].includes('popup_opened')) {
-    const activePopup = evt.target
-    closePopup(activePopup)
+    closePopup(clickTarget)
   }
 }
 
