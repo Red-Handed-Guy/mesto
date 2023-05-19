@@ -38,13 +38,14 @@
       <div class="popup__container">
         <h2 class="popup__title">Редактировать профиль</h2>
         <button type="button" class="popup__close-button"></button>
-        <form name="popup-form" class="popup__form">
+        <form name="popup-form" class="popup__form" novalidate>
           <div class="popup__input-wrapper">
-            <input name="name" placeholder="Имя" class="popup__input popup__input_type_name" type="text">
-            <span class="popup__error">Вы пропустили это поле</span>
+            <input name="name" placeholder="Имя" class="popup__input popup__input_type_name" type="text" minlength="2"
+              maxlength="40" required>
+            <span id="name-error" class="popup__error"></span>
             <input name="subtitle" placeholder="Вид деятельности" class="popup__input popup__input_type_subtitle"
-              type="text">
-            <span class="popup__error">Вы пропустили это поле</span>
+              type="text" minlength="2" maxlength="200" required>
+            <span id="subtitle-error" class="popup__error"></span>
           </div>
           <button class="popup__save-button" type="submit">Сохранить</button>
         </form>
@@ -54,13 +55,14 @@
       <div class="popup__container">
         <h2 class="popup__title">Новое место</h2>
         <button type="button" class="popup__close-button"></button>
-        <form name="popup-form" class="popup__form">
+        <form name="popup-form" class="popup__form" novalidate>
           <div class="popup__input-wrapper">
-            <input name="card-name" placeholder="Название" class="popup__input popup__input_type_name" type="text">
-            <span class="popup__error">Вы пропустили это поле</span>
+            <input name="card-name" placeholder="Название" class="popup__input popup__input_type_name" type="text"
+              minlength="2" maxlength="30" required>
+            <span id="card-name-error" class="popup__error"></span>
             <input name="card-url" placeholder="Ссылка на картинку" class="popup__input popup__input_type_subtitle"
-              type="url">
-            <span class="popup__error">Вы пропустили это поле</span>
+              type="url" required>
+            <span id="card-url-error" class="popup__error"></span>
           </div>
           <button class="popup__save-button" type="submit">Создать</button>
         </form>
@@ -68,8 +70,7 @@
     </div>
     <div class="popup popup_type_img">
       <figure class="popup__img-container">
-        <img src="#" alt=""
-          class="popup__img">
+        <img src="#" alt="" class="popup__img">
         <figcaption class="popup__img-caption"></figcaption>
         <button type="button" class="popup__close-button"></button>
       </figure>
@@ -88,8 +89,9 @@
     </template>
   </div>
   <script src="./scripts/cards.js"></script>
-  <script src="./scripts/index.js"></script>
   <script src="./scripts/validate.js"></script>
+  <script src="./scripts/index.js"></script>
+
 </body>
 
 </html>

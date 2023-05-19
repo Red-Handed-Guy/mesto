@@ -3,4 +3,9 @@
   border: #000 solid 1px;
   color: #000;
   opacity: 0.2;
+  cursor: default;
+}
+
+.popup__save-button_disabled:hover {
+  background-color: transparent;
 }

@@ -1,18 +1,16 @@
 //постоянные popupEdit
 const popupEdit = document.querySelector('.popup_type_edit')
 const popupEditName = popupEdit.querySelector('.popup__input_type_name')
-const popupEditSubtitle = popupEdit.querySelector(
-  '.popup__input_type_subtitle'
-)
+const popupEditSubtitle = popupEdit.querySelector('.popup__input_type_subtitle')
 const popupEditForm = popupEdit.querySelector('.popup__form')
+const editSaveButton = popupEditForm.querySelector('.popup__save-button')
 
 //постоянные popupNewCard
 const popupNewCard = document.querySelector('.popup_type_new-card')
 const popupCardName = popupNewCard.querySelector('.popup__input_type_name')
-const popupCardLink = popupNewCard.querySelector(
-  '.popup__input_type_subtitle'
-)
+const popupCardLink = popupNewCard.querySelector('.popup__input_type_subtitle')
 const popupCardForm = popupNewCard.querySelector('.popup__form')
+const cardSaveButton = popupCardForm.querySelector('.popup__save-button')
 
 //постоянные popupTypeImg
 const popupTypeImg = document.querySelector('.popup_type_img')
@@ -32,14 +30,47 @@ const profileTitle = profile.querySelector('.profile__title')
 const profileSubtitle = profile.querySelector('.profile__subtitle')
 const cardsAddButton = document.querySelector('.profile__add-button')
 
+//закрытие popup по escape
+function closeByEsc(evt) {
+  if (evt.key === 'Escape') {
+    const activePopup = document.querySelector('.popup_opened')
+    closePopup(activePopup)
+  }
+}
+
+//закрытие popup по клику мыши
+function closeByClick(evt) {
+  const clickTarget = evt.target
+  if ([...clickTarget.classList].includes('popup_opened')) {
+    const activePopup = evt.target
+    closePopup(activePopup)
+  }
+}
+
 //открытие popup
 function openPopup(modal) {
   modal.classList.add('popup_opened')
+  document.addEventListener('keydown', closeByEsc)
+  document.addEventListener('mousedown', closeByClick)
 }
 
 //закрытие popup
 function closePopup(modal) {
   modal.classList.remove('popup_opened')
+  document.removeEventListener('keydown', closeByEsc)
+  document.removeEventListener('mousedown', closeByClick)
+}
+
+//добавление текста со страницы в value попапа
+function putTextInForm() {
+  popupEditName.value = profileTitle.textContent
+  popupEditSubtitle.value = profileSubtitle.textContent
+}
+
+//добавление текста из value попапа на страницу
+function putTextInPage() {
+  profileTitle.textContent = popupEditName.value
+  profileSubtitle.textContent = popupEditSubtitle.value
 }
 
 //!карточка element (помещение значений в строки html-тегов)
@@ -84,15 +115,22 @@ initialCards.map((cards) => {
 //открытие
 profileEditButton.addEventListener('click', () => {
   openPopup(popupEdit)
-  popupEditName.value = profileTitle.textContent
-  popupEditSubtitle.value = profileSubtitle.textContent
+  putTextInForm()
+  toggleButtonState(
+    editSaveButton,
+    popupEditForm.checkValidity(),
+    configValidation
+  )
+  const inputList = popupEditForm.querySelectorAll('.popup__input')
+  inputList.forEach((inputItem) => {
+    checkInputVailidity(inputItem, popupEditForm, configValidation)
+  })
 })
 
 //сохранение
 popupEditForm.addEventListener('submit', (event) => {
   event.preventDefault()
-  profileTitle.textContent = popupEditName.value
-  profileSubtitle.textContent = popupEditSubtitle.value
+  putTextInPage()
   closePopup(popupEdit)
 })
 
@@ -100,6 +138,11 @@ popupEditForm.addEventListener('submit', (event) => {
 //открытие
 cardsAddButton.addEventListener('click', () => {
   openPopup(popupNewCard)
+  toggleButtonState(
+    cardSaveButton,
+    popupCardForm.checkValidity(),
+    configValidation
+  )
 })
 
 //сохранение
@@ -107,29 +150,12 @@ popupCardForm.addEventListener('submit', (event) => {
   event.preventDefault()
   const cardObj = { name: popupCardName.value, link: popupCardLink.value }
   elementsContainer.prepend(makeElementCard(cardObj))
-  popupCardName.value = ''
-  popupCardLink.value = ''
+  popupCardForm.reset()
   closePopup(popupNewCard)
 })
 
-//!кнопка закрытия popup'ов 
+//!кнопка закрытия popup'ов
 document.querySelectorAll('.popup__close-button').forEach((button) => {
   const buttonsPopup = button.closest('.popup') // нашли родителя с нужным классом
   button.addEventListener('click', () => closePopup(buttonsPopup)) // закрыли попап
-})
-
-//!закрытие popup'a по кнопке Escape
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
-    const activePopup = document.querySelector('.popup_opened')
-    activePopup.classList.remove('popup_opened')
-  }
-})
-
-//!закрытие popup'a кликом по оверлею
-document.addEventListener('click', (evt) => {
-  const clickTarget = evt.target.classList
-  if ([...clickTarget].includes('popup_opened')) {
-    clickTarget.remove('popup_opened')
-  }
 })
