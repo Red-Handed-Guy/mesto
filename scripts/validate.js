@@ -1,4 +1,4 @@
-const configValidation = {
+export const configValidation = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__save-button',
@@ -22,7 +22,7 @@ function showError(inputItem, errorElement, config) {
 }
 
 //проверка валидации кнопки submit
-function toggleButtonState(buttonElement, isActive, config) {
+export function toggleButtonState(buttonElement, isActive, config) {
   if (isActive) {
     buttonElement.disabled = false
     buttonElement.classList.remove(config.inactiveButtonClass)
@@ -33,7 +33,7 @@ function toggleButtonState(buttonElement, isActive, config) {
 }
 
 //валидация полей input
-function checkInputVailidity(inputItem, formItem, config) {
+export function checkInputVailidity(inputItem, formItem, config) {
   const inputValidity = inputItem.checkValidity()
   const errorElement = formItem.querySelector(`#${inputItem.name}-error`)
   if (inputValidity) {
@@ -71,3 +71,4 @@ function enableValidation(config) {
 }
 
 enableValidation(configValidation)
+
