@@ -1,3 +1,7 @@
+import { initialCards } from './cards.js'
+import { Card } from './Card.js'
+import { configValidation, FormValidator } from './FormValidator.js'
+
 //постоянные popupEdit
 const popupEdit = document.querySelector('.popup_type_edit')
 const popupEditName = popupEdit.querySelector('.popup__input_type_name')
@@ -73,42 +77,17 @@ function putTextInPage() {
   profileSubtitle.textContent = popupEditSubtitle.value
 }
 
-//!карточка element (помещение значений в строки html-тегов)
-const makeElementCard = (card) => {
-  const elementCard = elementTemplateCard
-    .querySelector('.element')
-    .cloneNode(true)
-  const cardImg = elementCard.querySelector('.element__img')
-  const likeToggle = elementCard.querySelector('.element__like-img')
-
-  elementCard.querySelector('.element__title').textContent = card.name
-  cardImg.src = card.link
-  cardImg.alt = card.name
-
-  //слушатель лайка
-  likeToggle.addEventListener('click', () => {
-    likeToggle.classList.toggle('element__like-img_active')
-  })
-
-  //слушатель кнопки удалить карточку
-  elementCard
-    .querySelector('.element__delete-button')
-    .addEventListener('click', () => elementCard.remove())
-
-  //слушатель картинки (открыть popup)
-  elementCard.querySelector('.element__img').addEventListener('click', () => {
-    openPopup(popupTypeImg)
-    popupImg.src = card.link
-    popupImg.alt = card.name
-    popupCaption.textContent = card.name
-  })
-  return elementCard
-}
-
 //*добавление карточек по-умолчанию
-initialCards.map((cards) => {
-  const initialCard = makeElementCard(cards)
-  elementsContainer.append(initialCard)
+initialCards.map((card) => {
+  const initialCard = new Card(
+    card,
+    elementTemplateCard,
+    openPopup,
+    popupTypeImg,
+    popupImg,
+    popupCaption
+  )
+  elementsContainer.append(initialCard.generateCard())
 })
 
 //!прослушивание элементов profileEditButton и popupEdit
@@ -116,14 +95,12 @@ initialCards.map((cards) => {
 profileEditButton.addEventListener('click', () => {
   openPopup(popupEdit)
   putTextInForm()
-  toggleButtonState(
-    editSaveButton,
-    popupEditForm.checkValidity(),
-    configValidation
-  )
+  const formValidation = new FormValidator(configValidation, popupEditForm)
+  formValidation.toggleButtonState()
+
   const inputList = popupEditForm.querySelectorAll('.popup__input')
   inputList.forEach((inputItem) => {
-    checkInputVailidity(inputItem, popupEditForm, configValidation)
+    formValidation.checkInputVailidity(inputItem)
   })
 })
 
@@ -138,18 +115,22 @@ popupEditForm.addEventListener('submit', (event) => {
 //открытие
 cardsAddButton.addEventListener('click', () => {
   openPopup(popupNewCard)
-  toggleButtonState(
-    cardSaveButton,
-    popupCardForm.checkValidity(),
-    configValidation
-  )
+  const formValidation = new FormValidator(configValidation, popupCardForm)
+  formValidation.toggleButtonState()
 })
 
 //сохранение
 popupCardForm.addEventListener('submit', (event) => {
   event.preventDefault()
   const cardObj = { name: popupCardName.value, link: popupCardLink.value }
-  elementsContainer.prepend(makeElementCard(cardObj))
+  const newCard = new Card(
+    cardObj,
+    openPopup,
+    popupTypeImg,
+    popupImg,
+    popupCaption
+  )
+  elementsContainer.prepend(newCard.generateCard())
   popupCardForm.reset()
   closePopup(popupNewCard)
 })
