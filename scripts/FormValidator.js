@@ -19,7 +19,7 @@ export class FormValidator {
     )
   }
 
-  //скрытие ошибки валидации
+  //скрытие ошибки валидации!
   _hideError(inputItem, errorElement) {
     errorElement.classList.remove(this._config.errorClass)
     inputItem.classList.remove(this._config.inputErrorClass)
