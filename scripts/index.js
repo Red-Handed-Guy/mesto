@@ -1,6 +1,6 @@
-import  { initialCards } from './cards.js'
-import * as validity from './validate.js'
-import  { Card } from './card.js'
+import { initialCards } from './cards.js'
+import { Card } from './Card.js'
+import { configValidation, FormValidator } from './FormValidator.js'
 
 //постоянные popupEdit
 const popupEdit = document.querySelector('.popup_type_edit')
@@ -79,7 +79,14 @@ function putTextInPage() {
 
 //*добавление карточек по-умолчанию
 initialCards.map((card) => {
-  const initialCard = new Card(card, openPopup, popupTypeImg, popupImg, popupCaption)
+  const initialCard = new Card(
+    card,
+    elementTemplateCard,
+    openPopup,
+    popupTypeImg,
+    popupImg,
+    popupCaption
+  )
   elementsContainer.append(initialCard.generateCard())
 })
 
@@ -88,14 +95,12 @@ initialCards.map((card) => {
 profileEditButton.addEventListener('click', () => {
   openPopup(popupEdit)
   putTextInForm()
-  validity.toggleButtonState(
-    editSaveButton,
-    popupEditForm.checkValidity(),
-    validity.configValidation
-  )
+  const formValidation = new FormValidator(configValidation, popupEditForm)
+  formValidation.toggleButtonState()
+
   const inputList = popupEditForm.querySelectorAll('.popup__input')
   inputList.forEach((inputItem) => {
-    validity.checkInputVailidity(inputItem, popupEditForm, validity.configValidation)
+    formValidation.checkInputVailidity(inputItem)
   })
 })
 
@@ -110,18 +115,21 @@ popupEditForm.addEventListener('submit', (event) => {
 //открытие
 cardsAddButton.addEventListener('click', () => {
   openPopup(popupNewCard)
-  toggleButtonState(
-    cardSaveButton,
-    popupCardForm.checkValidity(),
-    configValidation
-  )
+  const formValidation = new FormValidator(configValidation, popupCardForm)
+  formValidation.toggleButtonState()
 })
 
 //сохранение
 popupCardForm.addEventListener('submit', (event) => {
   event.preventDefault()
   const cardObj = { name: popupCardName.value, link: popupCardLink.value }
-  const newCard = new Card(cardObj, openPopup, popupTypeImg, popupImg, popupCaption)
+  const newCard = new Card(
+    cardObj,
+    openPopup,
+    popupTypeImg,
+    popupImg,
+    popupCaption
+  )
   elementsContainer.prepend(newCard.generateCard())
   popupCardForm.reset()
   closePopup(popupNewCard)

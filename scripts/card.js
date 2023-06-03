@@ -1,7 +1,8 @@
 export class Card {
-  constructor(card, openPopup, popupTypeImg, popupImg, popupCaption) {
+  constructor(card, templateCard, openPopup, popupTypeImg, popupImg, popupCaption) {
     this._name = card.name
     this._link = card.link
+    this.templateCard = templateCard
     this._openPopup = openPopup
     this._popupTypeImg = popupTypeImg
     this._popupImg = popupImg
@@ -9,7 +10,7 @@ export class Card {
   }
 
   _getTemplate() {
-    const cardElement = document.querySelector('.element-template').content.querySelector('.element').cloneNode(true)
+    const cardElement = this.templateCard.querySelector('.element').cloneNode(true)
     return cardElement
   }
 
