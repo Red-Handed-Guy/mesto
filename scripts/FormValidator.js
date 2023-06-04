@@ -75,12 +75,19 @@ export class FormValidator {
   }
 }
 
-//повесили валидацию на каждую форму
-function enableValidation(config) {
-  const forms = document.querySelectorAll(config.formSelector)
-  ;[...forms].forEach((formItem) => {
-    const formValidation = new FormValidator(config, formItem)
-    formValidation.enableValidation()
+export const formValidators = {}
+
+// Включение валидации
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement)
+    // получаем данные из атрибута `name` у формы
+    const formName = formElement.getAttribute('name')
+
+    // вот тут в объект записываем под именем формы
+    formValidators[formName] = validator
+    validator.enableValidation()
   })
 }
 

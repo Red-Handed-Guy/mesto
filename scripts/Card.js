@@ -2,7 +2,7 @@ export class Card {
   constructor(card, templateCard, openPopup, popupTypeImg, popupImg, popupCaption) {
     this._name = card.name
     this._link = card.link
-    this.templateCard = templateCard
+    this._templateCard = templateCard
     this._openPopup = openPopup
     this._popupTypeImg = popupTypeImg
     this._popupImg = popupImg
@@ -10,24 +10,33 @@ export class Card {
   }
 
   _getTemplate() {
-    const cardElement = this.templateCard.querySelector('.element').cloneNode(true)
+    const cardElement = this._templateCard.querySelector('.element').cloneNode(true)
     return cardElement
+  }
+  _toggleLike(){
+    this._cardLike.classList.toggle('element__like-img_active')
+  }
+
+  _deleteCard() {
+    this._cardBody.remove()
+  }
+
+  _handleImageClick() {
+    this._popupImg.src = this._link
+    this._popupImg.alt = this._name
+    this._popupCaption.textContent = this._name
+    this._openPopup(this._popupTypeImg)
   }
 
   _setCardEventListeners() {
     this._cardLike.addEventListener('click', () => {
-      this._cardLike.classList.toggle('element__like-img_active')
+      this._toggleLike()
     })
-
     this._cardImg.addEventListener('click', () => {
-      this._popupImg.src = this._link
-      this._popupImg.alt = this._name
-      this._popupCaption.textContent = this._name
-      this._openPopup(this._popupTypeImg)
+      this._handleImageClick()
     })
-
     this._cardDelButton.addEventListener('click', () => {
-      this._cardBody.remove()
+      this._deleteCard()
     })
 
   }
