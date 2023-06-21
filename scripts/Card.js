@@ -1,5 +1,12 @@
 export class Card {
-  constructor(card, templateCard, popupTypeImg, popupImg, popupCaption, { handleCardClick }) {
+  constructor(
+    card,
+    templateCard,
+    popupTypeImg,
+    popupImg,
+    popupCaption,
+    { handleCardClick }
+  ) {
     this._name = card.name
     this._link = card.link
     this._templateCard = templateCard
@@ -10,10 +17,12 @@ export class Card {
   }
 
   _getTemplate() {
-    const cardElement = this._templateCard.querySelector('.element').cloneNode(true)
+    const cardElement = this._templateCard
+      .querySelector('.element')
+      .cloneNode(true)
     return cardElement
   }
-  _toggleLike(){
+  _toggleLike() {
     this._cardLike.classList.toggle('element__like-img_active')
   }
 
@@ -31,14 +40,15 @@ export class Card {
     this._cardDelButton.addEventListener('click', () => {
       this._deleteCard()
     })
-
   }
 
   generateCard() {
     this._cardBody = this._getTemplate()
     this._cardImg = this._cardBody.querySelector('.element__img')
     this._cardLike = this._cardBody.querySelector('.element__like-img')
-    this._cardDelButton = this._cardBody.querySelector('.element__delete-button')
+    this._cardDelButton = this._cardBody.querySelector(
+      '.element__delete-button'
+    )
 
     this._cardBody.querySelector('.element__title').textContent = this._name
     this._cardImg.src = this._link
@@ -49,7 +59,3 @@ export class Card {
     return this._cardBody
   }
 }
-
-
-
-
