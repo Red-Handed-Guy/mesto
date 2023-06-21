@@ -1,4 +1,3 @@
-//карточки по-умолчанию
 export const initialCards = [
   {
     name: 'Архыз',
@@ -25,3 +24,14 @@ export const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
   },
 ]
+
+export const cardsContainer = '.elements'
+
+export const popupProfileSelector = '.popup_type_edit'
+export const popupNewCardSelector = '.popup_type_new-card'
+export const popupImgSelector = '.popup_type_img'
+
+export const profileSelectors = {
+  title: '.profile__title',
+  subtitle: '.profile__subtitle',
+}
