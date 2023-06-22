@@ -2,17 +2,11 @@ export class Card {
   constructor(
     card,
     templateCard,
-    popupTypeImg,
-    popupImg,
-    popupCaption,
     { handleCardClick }
   ) {
     this._name = card.name
     this._link = card.link
     this._templateCard = templateCard
-    this._popupTypeImg = popupTypeImg
-    this._popupImg = popupImg
-    this._popupCaption = popupCaption
     this._handleCardClick = handleCardClick
   }
 

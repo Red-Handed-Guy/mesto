@@ -6,35 +6,35 @@ export default class PopupWithForm extends Popup {
     this._makeSubmitForm = makeSubmitForm
     this._popupForm = this._popup.querySelector('.popup__form')
     this._getInputValuesAuxiliary = this._getInputValues.bind(this)
-    this._inputs = [...this._popupForm.querySelectorAll('.popup__input')]
+    this._inputs = this._popupForm.querySelectorAll('.popup__input')
+    this._title = this._popupForm.querySelector('.popup__input_type_name')
+    this._subtitle = this._popupForm.querySelector('.popup__input_type_subtitle')
+    this._inputs = [this._title, this._subtitle]
   }
 
-  _getInputValues() {
-    this.inputList = {}
+  _getInputValues(event) {
+    event.preventDefault()
+    const inputList = {}
     this._inputs.forEach((input) => {
       const inputName = input.getAttribute('name')
-      this.inputList[inputName] = input.value
+      inputList[inputName] = input.value
     })
+    this._makeSubmitForm(inputList)
   }
 
-  setInputValues(inputTextContent) {
-    if (!(inputTextContent.length === this._inputs.length)) {
-      return
-    }
-    for (let i = 0; i < this._inputs.length; i++) {
-      this._inputs[i].value = inputTextContent[i]
-    }
+
+  getTextContent({title, subtitle}){
+    this._title.value = title
+    this._subtitle.value = subtitle
   }
 
   closePopup() {
-    super.closePopup()
-    this._popupForm.removeEventListener('submit', this._makeSubmitForm)
     this._popupForm.reset()
+    super.closePopup()
   }
 
   setEventListeners() {
     this._popupForm.addEventListener('submit', this._getInputValuesAuxiliary)
-    this._popupForm.addEventListener('submit', this._makeSubmitForm)
     super.setEventListeners()
   }
 }

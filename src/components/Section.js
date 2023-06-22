@@ -7,20 +7,20 @@ export default class Section {
 
   renderItems() {
     this._renderedItems.forEach((item) => {
-      this.addItem(item)
+      this.addItem(this._renderer(item))
     })
   }
 
   addItem(item, position) {
     switch (position) {
       case 'prepend':
-        this._container.prepend(this._renderer(item))
+        this._container.prepend(item)
         break
       case 'append':
-        this._container.append(this._renderer(item))
+        this._container.append(item)
         break
       default:
-        this._container.append(this._renderer(item))
+        this._container.append(item)
     }
   }
 }

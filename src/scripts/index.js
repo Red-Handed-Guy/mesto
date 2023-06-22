@@ -15,14 +15,10 @@ import PopupWithImage from '../components/PopupWithImage.js'
 import PopupWithForm from '../components/PopupWithForm.js'
 import UserInfo from '../components/UserInfo.js'
 
+//!поиск констант в DOM
 //постоянные popupEdit
 const popupEdit = document.querySelector('.popup_type_edit')
 const popupEditForm = popupEdit.querySelector('.popup__form')
-
-//постоянные popupTypeImg
-const popupTypeImg = document.querySelector('.popup_type_img')
-const popupImg = popupTypeImg.querySelector('.popup__img')
-const popupCaption = popupTypeImg.querySelector('.popup__img-caption')
 
 //постоянные element-template
 const elementTemplateCard = document.querySelector('.element-template').content
@@ -40,24 +36,19 @@ const UserInfoFromPage = new UserInfo(profileSelectors)
 const ImgPopup = new PopupWithImage(popupImgSelector)
 
 const ProfilePopup = new PopupWithForm(popupProfileSelector, {
-  makeSubmitForm: (event) => {
-    event.preventDefault()
-    UserInfoFromPage.setUserinfo(
-      ProfilePopup.inputList.name,
-      ProfilePopup.inputList.subtitle
-    )
+  makeSubmitForm: (inputValues) => {
+    UserInfoFromPage.setUserinfo(inputValues.name, inputValues.subtitle)
     ProfilePopup.closePopup()
   },
 })
 
 const CardsPopup = new PopupWithForm(popupNewCardSelector, {
-  makeSubmitForm: (event) => {
-    event.preventDefault()
+  makeSubmitForm: (inputValues) => {
     const cardObj = {
-      name: CardsPopup.inputList['card-name'],
-      link: CardsPopup.inputList['card-url'],
+      name: inputValues['card-name'],
+      link: inputValues['card-url'],
     }
-    defaultCardList.addItem(cardObj, 'prepend')
+    defaultCardList.addItem(createCard(cardObj), 'prepend')
     CardsPopup.closePopup()
   },
 })
@@ -65,33 +56,33 @@ const CardsPopup = new PopupWithForm(popupNewCardSelector, {
 const defaultCardList = new Section(
   {
     items: initialCards,
-    renderer: (item) => {
-      const newCard = new Card(
-        item,
-        elementTemplateCard,
-        popupTypeImg,
-        popupImg,
-        popupCaption,
-        {
-          handleCardClick: (imgPath, text) => {
-            ImgPopup.openPopup(imgPath, text)
-            ImgPopup.setEventListeners()
-          },
-        }
-      )
-      const readyCard = newCard.generateCard()
-      return readyCard
-    },
+    renderer: createCard,
   },
   cardsContainer
 )
+
+//!Функция создания карточки
+function createCard(item) {
+  const newCard = new Card(
+    item,
+    elementTemplateCard,
+    {
+      handleCardClick: (imgPath, text) => {
+        ImgPopup.openPopup(imgPath, text)
+        ImgPopup.setEventListeners()
+      },
+    }
+  )
+  const readyCard = newCard.generateCard()
+  return readyCard
+}
+
 
 //!прослушивание элементов profileEditButton и popupEdit
 //открытие
 profileEditButton.addEventListener('click', () => {
   ProfilePopup.openPopup()
-  ProfilePopup.setEventListeners()
-  ProfilePopup.setInputValues(UserInfoFromPage.getUserinfo())
+  ProfilePopup.getTextContent(UserInfoFromPage.getUserinfo())
   formValidators['profile-form'].toggleButtonState()
   const inputList = popupEditForm.querySelectorAll('.popup__input')
   inputList.forEach((inputItem) => {
@@ -103,8 +94,11 @@ profileEditButton.addEventListener('click', () => {
 //открытие
 cardsAddButton.addEventListener('click', () => {
   CardsPopup.openPopup()
-  CardsPopup.setEventListeners()
   formValidators['card-form'].toggleButtonState()
 })
 
+
+//! Отрисовка дефолтных объектов и навешивание слушателей
+ProfilePopup.setEventListeners()
+CardsPopup.setEventListeners()
 defaultCardList.renderItems()

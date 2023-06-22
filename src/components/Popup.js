@@ -22,22 +22,16 @@ export default class Popup {
   }
   openPopup() {
     this._popup.classList.add(this._openPopupSelector.slice(1))
+    document.addEventListener('keydown', this.handleEscCloseAuxiliary)
   }
 
   closePopup() {
-    this._removeEventListeners()
     this._popup.classList.remove(this._openPopupSelector.slice(1))
+    document.removeEventListener('keydown', this.handleEscCloseAuxiliary)
   }
 
   setEventListeners() {
-    document.addEventListener('mousedown', this.closeByClickAuxiliary)
-    document.addEventListener('keydown', this.handleEscCloseAuxiliary)
+    this._popup.addEventListener('mousedown', this.closeByClickAuxiliary)
     this._closeButton.addEventListener('click', this.closePopupAuxiliary)
-  }
-
-  _removeEventListeners() {
-    document.removeEventListener('mousedown', this.closeByClickAuxiliary)
-    document.removeEventListener('keydown', this.handleEscCloseAuxiliary)
-    this._closeButton.removeEventListener('click', this.closePopupAuxiliary)
   }
 }
