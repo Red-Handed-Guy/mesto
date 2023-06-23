@@ -19,7 +19,7 @@ export default class PopupWithForm extends Popup {
     this._makeSubmitForm(inputList)
   }
 
-  setTextContent(items) {
+  setInputValues(items) {
     ;[...this._inputs].forEach((input) => {
       input.value = items[input.name]
     })
