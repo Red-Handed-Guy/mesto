@@ -31,25 +31,25 @@ const profileEditButton = profile.querySelector('.profile__edit-button')
 const cardsAddButton = document.querySelector('.profile__add-button')
 
 //!создание классов
-const UserInfoFromPage = new UserInfo(profileSelectors)
+const userInfoFromPage = new UserInfo(profileSelectors)
 
-const ImgPopup = new PopupWithImage(popupImgSelector)
+const imgPopup = new PopupWithImage(popupImgSelector)
 
-const ProfilePopup = new PopupWithForm(popupProfileSelector, {
+const profilePopup = new PopupWithForm(popupProfileSelector, {
   makeSubmitForm: (inputValues) => {
-    UserInfoFromPage.setUserinfo(inputValues.name, inputValues.subtitle)
-    ProfilePopup.closePopup()
+    userInfoFromPage.setUserinfo(inputValues.name, inputValues.subtitle)
+    profilePopup.closePopup()
   },
 })
 
-const CardsPopup = new PopupWithForm(popupNewCardSelector, {
+const cardsPopup = new PopupWithForm(popupNewCardSelector, {
   makeSubmitForm: (inputValues) => {
     const cardObj = {
       name: inputValues['card-name'],
       link: inputValues['card-url'],
     }
     defaultCardList.addItem(createCard(cardObj), 'prepend')
-    CardsPopup.closePopup()
+    cardsPopup.closePopup()
   },
 })
 
@@ -68,8 +68,7 @@ function createCard(item) {
     elementTemplateCard,
     {
       handleCardClick: (imgPath, text) => {
-        ImgPopup.openPopup(imgPath, text)
-        ImgPopup.setEventListeners()
+        imgPopup.openPopup(imgPath, text)
       },
     }
   )
@@ -81,8 +80,8 @@ function createCard(item) {
 //!прослушивание элементов profileEditButton и popupEdit
 //открытие
 profileEditButton.addEventListener('click', () => {
-  ProfilePopup.openPopup()
-  ProfilePopup.getTextContent(UserInfoFromPage.getUserinfo())
+  profilePopup.openPopup()
+  profilePopup.setTextContent(userInfoFromPage.getUserinfo())
   formValidators['profile-form'].toggleButtonState()
   const inputList = popupEditForm.querySelectorAll('.popup__input')
   inputList.forEach((inputItem) => {
@@ -93,12 +92,13 @@ profileEditButton.addEventListener('click', () => {
 //!прослушивание элементов cardsAddButton и popupNewCard
 //открытие
 cardsAddButton.addEventListener('click', () => {
-  CardsPopup.openPopup()
+  cardsPopup.openPopup()
   formValidators['card-form'].toggleButtonState()
 })
 
 
 //! Отрисовка дефолтных объектов и навешивание слушателей
-ProfilePopup.setEventListeners()
-CardsPopup.setEventListeners()
+profilePopup.setEventListeners()
+cardsPopup.setEventListeners()
+imgPopup.setEventListeners()
 defaultCardList.renderItems()
