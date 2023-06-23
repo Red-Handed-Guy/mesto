@@ -81,7 +81,7 @@ function createCard(item) {
 //открытие
 profileEditButton.addEventListener('click', () => {
   profilePopup.openPopup()
-  profilePopup.setTextContent(userInfoFromPage.getUserinfo())
+  profilePopup.setInputValues(userInfoFromPage.getUserinfo())
   formValidators['profile-form'].toggleButtonState()
   const inputList = popupEditForm.querySelectorAll('.popup__input')
   inputList.forEach((inputItem) => {
