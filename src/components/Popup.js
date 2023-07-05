@@ -10,7 +10,7 @@ export default class Popup {
     this._saveButtonText = this._popup.querySelector('.popup__save-button-text')
   }
 
-  popupLoading(boolean, loadingText, normalText) {
+  loadingPopup(boolean, loadingText, normalText) {
     if (boolean) {
       this._saveButtonText.textContent = loadingText
       this._saveButtonText.classList.add('.popup__save-button-text_loading')

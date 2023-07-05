@@ -7,7 +7,6 @@ import {
   profileSelectors,
   popupDelCardSelector,
   popupAvatarSelector,
-  myId,
 } from '../utils/components.js'
 
 import { Card } from '../components/Card.js'
@@ -40,6 +39,8 @@ const profileEditAvatarButton = profile.querySelector(
   '.profile__avatar-wrapper'
 )
 
+let myId 
+
 //кнопка вызова формы добавления новой карточки
 const cardsAddButton = document.querySelector('.profile__add-button')
 
@@ -58,55 +59,61 @@ const imgPopup = new PopupWithImage(popupImgSelector)
 
 const cardDelPopup = new PopupWithConfirmation(popupDelCardSelector, {
   makeSubmitForm: (card) => {
-    cardDelPopup.popupLoading(true, 'Удаление...', 'Да')
+    cardDelPopup.loadingPopup(true, 'Удаление...', 'Да')
     newApi
       .delCard(card.cardId)
       .then(() => {
         card.deleteCard()
       })
+      .then(() => {
+        cardDelPopup.closePopup()
+      })
       .catch((err) => console.log(err))
       .finally(() => {
-        cardDelPopup.closePopup()
-        cardDelPopup.popupLoading(false, 'Удаление...', 'Да')
+        cardDelPopup.loadingPopup(false, 'Удаление...', 'Да')
       })
   },
 })
 
 const avatarPopup = new PopupWithForm(popupAvatarSelector, {
   makeSubmitForm: (inputValues) => {
-    avatarPopup.popupLoading(true, 'Сохранение...', 'Сохранить')
+    avatarPopup.loadingPopup(true, 'Сохранение...', 'Сохранить')
     newApi
       .setUserAvatar({ avatar: inputValues['avatar-url'] })
       .then((res) => {
         userInfoFromPage.setUserAvatar(res)
       })
+      .then(() => {
+        avatarPopup.closePopup()
+      })
       .catch((err) => console.log(err))
       .finally(() => {
-        avatarPopup.closePopup()
-        avatarPopup.popupLoading(false, 'Сохранение...', 'Сохранить')
+        avatarPopup.loadingPopup(false, 'Сохранение...', 'Сохранить')
       })
   },
 })
 
 const profilePopup = new PopupWithForm(popupProfileSelector, {
   makeSubmitForm: (inputValues) => {
-    profilePopup.popupLoading(true, 'Сохранение...', 'Сохранить')
+    profilePopup.loadingPopup(true, 'Сохранение...', 'Сохранить')
     newApi
       .setUserProfile(inputValues)
       .then((res) => {
         userInfoFromPage.setUserInfo(res)
       })
+      .then(() => {
+        profilePopup.closePopup()
+      })
       .catch((err) => console.log(err))
       .finally(() => {
-        profilePopup.closePopup()
-        profilePopup.popupLoading(false, 'Сохранение...', 'Сохранить')
+        profilePopup.loadingPopup(false, 'Сохранение...', 'Сохранить')
       })
   },
 })
 
 const cardsPopup = new PopupWithForm(popupNewCardSelector, {
   makeSubmitForm: (inputValues) => {
-    cardsPopup.popupLoading(true, 'Создание...', 'Создать')
+    cardsPopup.loadingPopup(true, 'Создание...', 'Создать')
     const cardObj = {
       name: inputValues['card-name'],
       link: inputValues['card-url'],
@@ -116,32 +123,33 @@ const cardsPopup = new PopupWithForm(popupNewCardSelector, {
       .then((res) => {
         defaultCardList.addItem(createCard(res), 'prepend')
       })
+      .then(() => {
+        cardsPopup.closePopup()
+      })
       .catch((err) => console.log(err))
       .finally(() => {
-        cardsPopup.closePopup()
-        cardsPopup.popupLoading(false, 'Создание...', 'Создать')
+        cardsPopup.loadingPopup(false, 'Создание...', 'Создать')
       })
   },
 })
 
 const defaultCardList = new Section({}, cardsContainer)
 
-newApi
-  .getInitialCards()
-  .then((res) => {
-    res.forEach((card) => {
+
+  Promise.all([newApi.getUserProfile(), newApi.getInitialCards()])
+// тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
+  .then(([userData, cards]) => {
+    userInfoFromPage.setUserInfo(userData)
+    userInfoFromPage.setUserAvatar(userData)
+    myId = userData._id
+    cards.forEach((card) => {
       defaultCardList.addItem(createCard(card))
     })
   })
-  .catch((err) => console.log(err))
+  .catch(err => {
+    console.log(err)
+  });
 
-newApi
-  .getUserProfile()
-  .then((res) => {
-    userInfoFromPage.setUserInfo(res)
-    userInfoFromPage.setUserAvatar(res)
-  })
-  .catch((err) => console.log(err))
 
 //!Функция создания карточки
 function createCard(item) {
@@ -153,6 +161,7 @@ function createCard(item) {
         newApi
           .toggleCardLike(cardId, method)
           .then((res) => {
+            newCard.toggleLikeColor()
             newCard.checkCardLikesCounter(res.likes)
           })
           .catch((err) => console.log(err))

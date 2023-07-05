@@ -1,21 +1,21 @@
-const handleResponse = res => {
-  if (res.ok) {
-    return res.json()
-  }
-  return Promise.reject(`Ошибка: ${res.status}`)
-}
-
 export default class Api {
   constructor({headers, link}) {
     this._headers = headers
     this._fetchLink = link
   }
 
+  _handleResponse(res) {
+    if (res.ok) {
+      return res.json()
+    }
+    return Promise.reject(`Ошибка: ${res.status}`)
+  }
+
   getInitialCards() {
     return fetch(`${this._fetchLink}/cards`, {
       headers: this._headers,
     })
-    .then(handleResponse)
+    .then(this._handleResponse)
   }
 
   toggleCardLike(cardId, method) {
@@ -23,7 +23,7 @@ export default class Api {
       method: method,
       headers: this._headers,
     })
-    .then(handleResponse)
+    .then(this._handleResponse)
   }
 
   setNewCard({ name, link }) {
@@ -35,7 +35,7 @@ export default class Api {
         link: link,
       }),
     })
-    .then(handleResponse)
+    .then(this._handleResponse)
   }
 
   delCard(cardId) {
@@ -46,14 +46,14 @@ export default class Api {
         headers: this._headers,
       }
     )
-    .then(handleResponse)
+    .then(this._handleResponse)
   }
 
   getUserProfile() {
     return fetch(`${this._fetchLink}/users/me`, {
       headers: this._headers,
     })
-    .then(handleResponse)
+    .then(this._handleResponse)
   }
 
   setUserProfile({ name, about }) {
@@ -65,7 +65,7 @@ export default class Api {
         about: about,
       }),
     })
-    .then(handleResponse)
+    .then(this._handleResponse)
   }
 
   setUserAvatar({ avatar }) {
@@ -76,7 +76,7 @@ export default class Api {
         avatar: avatar,
       }),
     })
-    .then(handleResponse)
+    .then(this._handleResponse)
   }
 }
 

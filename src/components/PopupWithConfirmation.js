@@ -12,12 +12,12 @@ export default class PopupWithConfirmation extends Popup {
     super.openPopup()
   }
 
-  _del() {
+  _delete() {
     this._makeSubmitForm(this._card)
   }
 
   setEventListeners() {
-    this._confirmButton.addEventListener('click', this._del.bind(this))
+    this._confirmButton.addEventListener('click', this._delete.bind(this))
     super.setEventListeners()
   }
 }

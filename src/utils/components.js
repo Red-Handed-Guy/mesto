@@ -7,7 +7,6 @@ export const popupDelCardSelector = '.popup_type_del-card'
 export const popupAvatarSelector = '.popup_type_new-avatar'
 
 
-export const myId = '06154741fec08cdd38dc43d0'
 
 export const profileSelectors = {
   title: '.profile__title',

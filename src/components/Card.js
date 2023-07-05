@@ -35,12 +35,18 @@ export class Card {
 
   _toggleLike() {
     if (this._cardIsLiked) {
-      this._cardLike.classList.remove('element__like-img_active')
       this._handleToggleLike(this.cardId, 'DELETE')
+    } else {
+      this._handleToggleLike(this.cardId, 'PUT')
+    }
+  }
+
+  toggleLikeColor() {
+    if (this._cardIsLiked) {
+      this._cardLike.classList.remove('element__like-img_active')
       this._cardIsLiked = false
     } else {
       this._cardLike.classList.add('element__like-img_active')
-      this._handleToggleLike(this.cardId, 'PUT')
       this._cardIsLiked = true
     }
   }
