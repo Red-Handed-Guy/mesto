@@ -4,4 +4,6 @@
 
 //!прослушивание элементов cardsAddButton и popupNewCard
 
+//!прослушивание элементов profileEditAvatarButton
+
 //!прослушивание элементов profileEditButton и popupEdit
