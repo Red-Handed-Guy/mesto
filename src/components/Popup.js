@@ -7,6 +7,18 @@ export default class Popup {
     this.closeByClickAuxiliary = this._closeByClick.bind(this)
     this.handleEscCloseAuxiliary = this._handleEscClose.bind(this)
     this.closePopupAuxiliary = this.closePopup.bind(this)
+    this._saveButtonText = this._popup.querySelector('.popup__save-button-text')
+  }
+
+  popupLoading(boolean, loadingText, normalText) {
+    if (boolean) {
+      this._saveButtonText.textContent = loadingText
+      this._saveButtonText.classList.add('.popup__save-button-text_loading')
+    }
+    if (!boolean) {
+      this._saveButtonText.textContent = normalText
+      this._saveButtonText.classList.remove('.popup__save-button-text_loading')
+    }
   }
 
   _handleEscClose(evt) {

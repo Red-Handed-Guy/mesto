@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack serve",
-    "deploy": "gh-pages -d dist"
+    "deploy": "webpack --mode production && gh-pages -d dist"
   },
   "author": "Krasnorutskiy Kirill",
   "license": "ISC",
