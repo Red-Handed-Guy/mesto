@@ -2,6 +2,8 @@
 
 //!Функция создания карточки
 
+//!поиск констант в DOM
+
 //!прослушивание элементов cardsAddButton и popupNewCard
 
 //!прослушивание элементов profileEditAvatarButton
