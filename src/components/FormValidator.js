@@ -20,7 +20,7 @@ export class FormValidator {
   }
 
   //скрытие ошибки валидации!
-  _hideError(inputItem, errorElement) {
+  hideError(inputItem, errorElement) {
     errorElement.classList.remove(this._config.errorClass)
     inputItem.classList.remove(this._config.inputErrorClass)
     errorElement.textContent = inputItem.validationMessage
@@ -51,7 +51,7 @@ export class FormValidator {
       `#${inputItem.name}-error`
     )
     if (inputValidity) {
-      this._hideError(inputItem, errorElement)
+      this.hideError(inputItem, errorElement)
     } else {
       this._showError(inputItem, errorElement)
     }
